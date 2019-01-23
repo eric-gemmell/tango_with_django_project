@@ -24,5 +24,6 @@ from django.conf.urls import url, include
 urlpatterns = [
     url(r"^$",views.index,name="index"),
     url(r"^rango/",include("rango.urls")),
+    url(r"^polls/",include("polls.urls")),
     url('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
