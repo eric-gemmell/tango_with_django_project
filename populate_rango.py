@@ -11,8 +11,10 @@ def populate():
 	"url":"http://docs.python.org/2/tutorial/"},
 	{"title": "GitHub Palamalama Python",
         "url":"https://github.com/palamalama/"},
-	{"title": "Official python tutorial",
-        "url":"http://docs.python.org/2/tutorial/"},
+	{"title":"How to Think like a Computer Scientist", 
+	"url":"http://www.greenteapress.com/thinkpython/"},
+	{"title":"Learn Python in 10 Minutes",
+	"url":"http://www.korokithakis.net/tutorials/python/"},
 	]
 	django_pages = [
 	{"title":"Official Django Tutorial",
@@ -43,7 +45,8 @@ def populate():
 def add_page(cat, title, url, views = 0):
 	p = Page.objects.get_or_create(category = cat, title = title)[0]
 	p.url = url
-	p.views = views
+	import random
+	p.views = random.randint(0,5) if views == 0 else views
 	p.save()
 	return p
 

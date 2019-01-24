@@ -171,7 +171,7 @@ class Chapter5ViewTests(TestCase):
 
         #Check title used correctly
         self.assertIn(b'<title>', response.content)
-        self.assertIn('</title>', response.content)
+        self.assertIn(b'</title>', response.content)
 
     # Need to add tests to:
     # check admin interface - is it configured and set up
