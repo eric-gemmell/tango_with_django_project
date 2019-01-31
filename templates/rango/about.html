@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-
-{% load staticfiles %} <!-- New line -->
-
-<html>
-
-<head>
-<title>About Page</title>
-</head>
-
-<body>
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+{{ category.name }}
+{% endblock %}
+{% block body_block %}
 
 <h1>This tutorial has been put together by me</h1>
 
@@ -20,6 +15,4 @@
 <img src="{% static "images/rango2.jpg" %}" alt="Picture of Rango" /> <!-- New line -->
 <img src="{{ MEDIA_URL}}cat.jpg" />
 </div>
-
-</body>
-</html>
+{% endblock %}
