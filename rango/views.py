@@ -38,8 +38,6 @@ def add_category(request):
 			form.save(commit=True)
 			return index(request)
 		else:
-			print(form)
-			print("POST WAS AN ERROR!")
 			print(form.errors)
 	return render(request, "rango/add_category.html",{"form":form})
 		
