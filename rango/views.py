@@ -3,6 +3,11 @@ from django.http import HttpResponse
 from rango.models import Category,Page
 from rango.forms import CategoryForm, PageForm
 from rango.forms import UserForm, UserProfileForm
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 # Create your views here.
 def index(request):
@@ -29,6 +34,7 @@ def show_category(request,category_name_slug):
 	
 	return render(request, "rango/category.html",context_dict)
 			
+@login_required
 def add_page(request, category_name_slug):
 	try:
 		category = Category.objects.get(slug=category_name_slug)
@@ -54,6 +60,7 @@ def add_page(request, category_name_slug):
 	context_dict = {'form':form, 'category': category}
 	return render(request, 'rango/add_page.html', context_dict)
 
+@login_required
 def add_category(request):
 	form = CategoryForm()
 
@@ -93,18 +100,28 @@ def register(request):
 	return render(request,'rango/register.html',{'user_form': user_form,'profile_form': profile_form,'registered': registered})
 				
 def user_login(request):
+	context_dict = {}
 	if request.method == 'POST':
 		username = request.POST.get('username')
 		password = request.POST.get('password')
 		user = authenticate(username=username, password=password)
-if user:
-if user.is_active:
-login(request, user)
-return HttpResponseRedirect(reverse('index'))
-else:
-return HttpResponse("Your Rango account is disabled.")
-else:
-print("Invalid login details: {0}, {1}".format(username, password))
-return HttpResponse("Invalid login details supplied.")
-else:
-return render(request, 'rango/login.html', {})
+		if user:
+			if user.is_active:
+				login(request, user)
+				return HttpResponseRedirect(reverse('index'))
+			else:
+				return HttpResponse("Your Rango account is disabled.")
+		else:
+			print("Invalid login details: {0}, {1}".format(username, password))
+			context_dict["error"]="Invalid Username or Password for {}.".format(username)
+			
+	return render(request, 'rango/login.html', context_dict)
+
+@login_required
+def user_logout(request):
+	logout(request)
+	return HttpResponseRedirect(reverse('index'))
+
+@login_required
+def restricted(request):
+	return render(request,"rango/restricted.html")
